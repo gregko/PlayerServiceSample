@@ -43,9 +43,11 @@ public class PlayerService extends Service {
                             Log.d("MPS", "KEYCODE_MEDIA_PLAY");
                             break;
                     }
+                    startService(new Intent(getApplicationContext(), PlayerService.class));
+                    return true;
                 }
             }
-            return super.onMediaButtonEvent(mediaButtonEvent);
+            return false;
         }
     };
 
