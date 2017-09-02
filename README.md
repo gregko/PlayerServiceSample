@@ -10,6 +10,7 @@ number OPR6.170623.013, Nexus 6P. Could someone tell me what's wrong and how to 
 button handling on Android 8 Oreo?
 
 **Sept. 1, 2017 - Solved**
+
 Android 8 Oreo sends media button events to the app that last played sound, and does not care
 about MediaSession setActive() and other calls... Trouble is that is must be MediaPlayer sound,
 they ignore speech generated with TextToSpeech API. A bug in my opinion, will follow to submit
