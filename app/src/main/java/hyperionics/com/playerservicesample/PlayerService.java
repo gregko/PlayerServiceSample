@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 public class PlayerService extends Service {
+    public static final String TAG = "MPS";
     private MediaSessionCompat mediaSession;
 
     private final MediaSessionCompat.Callback mMediaSessionCallback
@@ -34,13 +35,13 @@ public class PlayerService extends Service {
                     switch (keycode) {
                         // Do what you want in here
                         case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
-                            Log.d("MPS", "KEYCODE_MEDIA_PLAY_PAUSE");
+                            MainActivity.showText("KEYCODE_MEDIA_PLAY_PAUSE");
                             break;
                         case KeyEvent.KEYCODE_MEDIA_PAUSE:
-                            Log.d("MPS", "KEYCODE_MEDIA_PAUSE");
+                            MainActivity.showText("KEYCODE_MEDIA_PAUSE");
                             break;
                         case KeyEvent.KEYCODE_MEDIA_PLAY:
-                            Log.d("MPS", "KEYCODE_MEDIA_PLAY");
+                            MainActivity.showText("KEYCODE_MEDIA_PLAY");
                             break;
                     }
                     startService(new Intent(getApplicationContext(), PlayerService.class));
@@ -62,14 +63,14 @@ public class PlayerService extends Service {
                 .setState(PlaybackStateCompat.STATE_PAUSED, 0, 0)
                 .setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE)
                 .build());
-        mediaSession.setMetadata(new MediaMetadataCompat.Builder()
-                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, "Test Artist")
-                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, "Test Album")
-                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, "Test Track Name")
-                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, 10000)
-                .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART,
-                        BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
-                .build());
+//        mediaSession.setMetadata(new MediaMetadataCompat.Builder()
+//                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, "Test Artist")
+//                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, "Test Album")
+//                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, "Test Track Name")
+//                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, 10000)
+//                .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART,
+//                        BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+//                .build());
         mediaSession.setCallback(mMediaSessionCallback);
 
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -77,7 +78,7 @@ public class PlayerService extends Service {
             @Override
             public void onAudioFocusChange(int focusChange) {
                 // Ignore
-                Log.d("MPS", "focusChange=" + focusChange);
+                MainActivity.showText("focusChange=" + focusChange);
             }
         }, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
         mediaSession.setActive(true);
@@ -86,12 +87,12 @@ public class PlayerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (mediaSession.getController().getPlaybackState().getState() == PlaybackStateCompat.STATE_PLAYING) {
-            Log.d("MPS", "mediaSession set PAUSED state");
+            MainActivity.showText("mediaSession set PAUSED state");
             mediaSession.setPlaybackState(new PlaybackStateCompat.Builder()
                     .setState(PlaybackStateCompat.STATE_PAUSED, 0, 0.0f)
                     .setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE).build());
         } else {
-            Log.d("MPS", "mediaSession set PLAYING state");
+            MainActivity.showText("mediaSession set PLAYING state");
             mediaSession.setPlaybackState(new PlaybackStateCompat.Builder()
                     .setState(PlaybackStateCompat.STATE_PLAYING, 0, 1.0f)
                     .setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE).build());

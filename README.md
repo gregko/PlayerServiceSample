@@ -1,18 +1,13 @@
 # Android PlayerServiceSample
-Trivial Android player service that handles media buttons, based on the Gist by ianhanniballlake:
-https://gist.github.com/ianhanniballake/15dce0b233b4f4b23ef8. It shows only a LocCat output like
+Trivial Android player service that handles media buttons, that demonstrates a problem with
+ media button handling under Android 8 "Oreo". It is based on the Gist by ianhanniballlake:
+https://gist.github.com/ianhanniballake/15dce0b233b4f4b23ef8. It shows only text output when
+media buttons are pressed on any headset.
 
-KEYCODE_MEDIA_PLAY
+It works fine under Android versions 5.xx up to 7.xx, but fails under Android 8 "Oreo", even
+after playing a TTS sample from the button. It should bring media button focus to this app
+(there are people who listen to entire audio-books or long lists of articles with TTS, through
+Bluetooth and wired headsets), but it fails. The only known work-around is to use MediaPlayer
+to play a very short silent WAV file, only this brings media button focus to a TTS only app...
 
-when media button Play is pressed on a headset. It works under Android versions
-5.xx up to 7.xx, but fails under Android 8 "Oreo". Tested on the final release of Oreo, build
-number OPR6.170623.013, Nexus 6P. Could someone tell me what's wrong and how to fix media
-button handling on Android 8 Oreo?
-
-**Sept. 1, 2017 - Solved**
-
-Android 8 Oreo sends media button events to the app that last played sound, and does not care
-about MediaSession setActive() and other calls... Trouble is that is must be MediaPlayer sound,
-they ignore speech generated with TextToSpeech API. A bug in my opinion, will follow to submit
-it to Android issue tracker, but at least have a work-around now - play a very short and silent
-WAV file (from resources or assets) when media buttons focus is needed. Such a stupidity...
+Tested on the final release of Oreo, build number OPR6.170623.013, Nexus 6P. 
